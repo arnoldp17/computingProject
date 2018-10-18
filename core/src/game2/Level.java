@@ -79,7 +79,7 @@ public class Level {
 			}
 		}
 		
-	}
+	} // gjjg
 
 	private boolean circCollide(float xcord, float ycord, float sz, float xcord2, float ycord2, float sz2) {
 		float adj = Math.abs(xcord - xcord2);
