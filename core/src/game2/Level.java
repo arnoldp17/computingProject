@@ -39,6 +39,17 @@ public class Level {
 
 	public void renderLvl(ShapeRenderer sr) {
 		player.Motion();
+		for (int j = 0; j < blockMax; j++) { // fix so super speed doesnt happen
+			for (int k = 0; k < tileMax; k++) {
+
+				float X2 = blocks.get(j).getTileDataX(k);
+				float Y2 = blocks.get(j).getTileDataY(k);
+				float S2 = blocks.get(j).getTileDataSZ(k);
+				
+			}//X2, Y2, S2
+
+		}
+
 		player.renderAvatar(sr);
 		System.out.println("rendered block");
 		for (int j = 0; j < blockMax; j++) {
@@ -63,7 +74,7 @@ public class Level {
 					player.getXcord(), player.getYcord(), player.getSZ()) == true) {
 
 				(foes.get(i)).setSpdX((foes.get(i)).getSpdX() * -1);
-			//	(foes.get(i)).setSpdY((foes.get(i)).getSpdY() * -1);
+				// (foes.get(i)).setSpdY((foes.get(i)).getSpdY() * -1);
 
 			}
 			for (int k = 0; k < difficulty; k++) {
@@ -78,8 +89,8 @@ public class Level {
 				}
 			}
 		}
-		
-	} // gjjg
+
+	}
 
 	private boolean circCollide(float xcord, float ycord, float sz, float xcord2, float ycord2, float sz2) {
 		float adj = Math.abs(xcord - xcord2);
@@ -95,32 +106,8 @@ public class Level {
 		return collide;
 	}
 
+	public void boxCollision() {
 
-	private void boxCollision() {
-		for (int j = 0; j < blockMax; j++) {
-			for (int k = 0; k < tileMax; k++) {
-
-				float X1 = player.getXcord();
-				float S1 = player.getSZ();
-				float Y1 = player.getYcord();
-				float X2 = blocks.get(j).getTileDataX(k);
-				float Y2 = blocks.get(j).getTileDataY(k);
-				float S2 = blocks.get(j).getTileDataSZ(k);
-				float lftSd = X1 - S1;
-				float rghtSd = X1 + S1;
-				float ovr = Y1 - S1;
-				float undr = Y1 + S1;
-				if (lftSd <= X2 + S2 && rghtSd >= X2) {
-					if (Y2 + S2 >= ovr && undr >= Y2) {
-
-						player.setXcord(player.getXcord() + 5);
-						player.setYcord(player.getYcord() + 5);
-
-					}
-				}
-			}
-		}
-		
 		for (int i = 0; i < difficulty; i++) {
 			for (int j = 0; j < blockMax; j++) {
 				for (int k = 0; k < tileMax; k++) {
@@ -148,7 +135,6 @@ public class Level {
 		}
 
 	}
-
 
 	public void populate() {
 		for (int f = 0; f < difficulty; f++) {

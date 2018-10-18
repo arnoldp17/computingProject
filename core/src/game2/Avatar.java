@@ -101,7 +101,7 @@ public class Avatar {
 	}
 
 	public void Motion() {
-
+//float X2, float Y2, float S2
 		if (Gdx.input.isKeyPressed(Keys.A)) {
 
 			if (CheckWall(Xcord, Ycord, Size) != true) {
@@ -178,6 +178,24 @@ public class Avatar {
 		} else {
 			return false;
 		}
+	}
+	
+	public boolean boxCollide(float X2, float Y2, float S2) {
+		boolean collide = false; // TURN INTO A FUCNTION THAT CHECKS FOR EACH DIRECTION
+		float lftSd = Xcord - Size;
+		float rghtSd = Xcord + Size;
+		float ovr = Ycord - Size;
+		float undr = Ycord + Size;
+		if (lftSd <= X2 + S2 && rghtSd >= X2) {
+			if (Y2 + S2 >= ovr && undr >= Y2) {
+				collide = true;
+
+			}
+
+		}
+
+		return collide;
+
 	}
 
 	public void renderAvatar(ShapeRenderer sr) {

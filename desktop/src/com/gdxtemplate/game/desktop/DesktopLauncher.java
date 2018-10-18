@@ -19,7 +19,7 @@ public class DesktopLauncher {
 		// Gdx.app.getGraphics().getHeight();
 		config.width = 1000;
 		// Gdx.app.getGraphics().getWidth();
-		config.foregroundFPS = 45;
+		config.foregroundFPS = 60;
 
 		// config.backgroundFPS = 60;
 
