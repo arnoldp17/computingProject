@@ -1,5 +1,7 @@
 package game2;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
@@ -100,8 +102,8 @@ public class Avatar {
 		speedY = 0;
 	}
 
-	public void Motion() {
-//float X2, float Y2, float S2
+	public void Motion(ArrayList<Walls> blocks, int blockMax, int tileMax) {
+
 		if (Gdx.input.isKeyPressed(Keys.A)) {
 
 			if (CheckWall(Xcord, Ycord, Size) != true) {
@@ -111,9 +113,14 @@ public class Avatar {
 				} else {
 					setSpdX(-4);
 				}
-				MoveX();
+				if (boxCollide(blocks, blockMax, tileMax) != true) {
+					MoveX();
+				} else {
+					setXcord(getXcord() + 5);
+				}
 			}
 		}
+
 		if (Gdx.input.isKeyPressed(Keys.D)) {
 			if (CheckWall(Xcord, Ycord, Size) != true) {
 
@@ -122,9 +129,14 @@ public class Avatar {
 				} else {
 					setSpdX(4);
 				}
-				MoveX();
+				if (boxCollide(blocks, blockMax, tileMax) != true) {
+					MoveX();
+				} else {
+					setXcord(getXcord() - 5);
+				}
 			}
 		}
+
 		if (Gdx.input.isKeyPressed(Keys.S)) {
 			if (CheckWall(Xcord, Ycord, Size) != true) {
 
@@ -133,9 +145,14 @@ public class Avatar {
 				} else {
 					setSpdY(-4);
 				}
-				MoveY();
+				if (boxCollide(blocks, blockMax, tileMax) != true) {
+					MoveY();
+				} else {
+					setYcord(getYcord() + 5);
+				}
 			}
 		}
+
 		if (Gdx.input.isKeyPressed(Keys.W)) {
 			if (CheckWall(Xcord, Ycord, Size) != true) {
 
@@ -144,7 +161,11 @@ public class Avatar {
 				} else {
 					setSpdY(4);
 				}
-				MoveY();
+				if (boxCollide(blocks, blockMax, tileMax) != true) {
+					MoveY();
+				} //else {
+					//setYcord(getYcord() - 5);
+				//}
 			}
 		}
 
@@ -179,19 +200,29 @@ public class Avatar {
 			return false;
 		}
 	}
-	
-	public boolean boxCollide(float X2, float Y2, float S2) {
+
+	public boolean boxCollide(ArrayList<Walls> blocks, int blockMax, int tileMax) {
 		boolean collide = false; // TURN INTO A FUCNTION THAT CHECKS FOR EACH DIRECTION
-		float lftSd = Xcord - Size;
-		float rghtSd = Xcord + Size;
-		float ovr = Ycord - Size;
-		float undr = Ycord + Size;
-		if (lftSd <= X2 + S2 && rghtSd >= X2) {
-			if (Y2 + S2 >= ovr && undr >= Y2) {
-				collide = true;
+		for (int j = 0; j < blockMax; j++) {
+			for (int k = 0; k < tileMax; k++) {
 
+				float X2 = blocks.get(j).getTileDataX(k);
+				float Y2 = blocks.get(j).getTileDataY(k);
+				float S2 = blocks.get(j).getTileDataSZ(k);
+				// X2, Y2, S2
+
+				float lftSd = Xcord - Size;
+				float rghtSd = Xcord + Size;
+				float ovr = Ycord - Size;
+				float undr = Ycord + Size;
+				if (lftSd <= X2 + S2 && rghtSd >= X2) {
+					if (Y2 + S2 >= ovr && undr >= Y2) {
+						collide = true;
+
+					}
+
+				}
 			}
-
 		}
 
 		return collide;

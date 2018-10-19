@@ -9,7 +9,7 @@ import game2.Entity;
 import game2.Walls;
 
 public class Level {
-	private Avatar player = new Avatar(500, 500, 0, 0, 15, 'M'); // defines the player and its attributes
+	private Avatar player = new Avatar(500, 500, 0, 0, 20, 'M'); // defines the player and its attributes
 	private ArrayList<Entity> foes = new ArrayList<Entity>(); // creates a list for enemies
 	private ArrayList<Walls> blocks = new ArrayList<Walls>(); // creates a list for wall blocks
 	private int difficulty = 3; // Sets the difficulty multiplier
@@ -38,18 +38,8 @@ public class Level {
 	}
 
 	public void renderLvl(ShapeRenderer sr) {
-		player.Motion();
-		for (int j = 0; j < blockMax; j++) { // fix so super speed doesnt happen
-			for (int k = 0; k < tileMax; k++) {
-
-				float X2 = blocks.get(j).getTileDataX(k);
-				float Y2 = blocks.get(j).getTileDataY(k);
-				float S2 = blocks.get(j).getTileDataSZ(k);
-				
-			}//X2, Y2, S2
-
-		}
-
+		
+		player.Motion(blocks, blockMax, tileMax);
 		player.renderAvatar(sr);
 		System.out.println("rendered block");
 		for (int j = 0; j < blockMax; j++) {
