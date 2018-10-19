@@ -5,12 +5,14 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 public class WallTile {
 	private float Xcord;
 	private float Ycord;
-	private float Size;
+	private float SizeX;
+	private float SizeY;
 
-	public WallTile(float x, float y, float s) {
+	public WallTile(float x, float y, float sX, float sY) {
 		Xcord = x;
 		Ycord = y;
-		Size = s;
+		SizeX = sX;
+		SizeY = sY;
 		System.out.println("TILES MADE");
 	}
 
@@ -22,8 +24,12 @@ public class WallTile {
 		return Ycord;
 	}
 
-	public float getSZ() {
-		return Size;
+	public float getSZX() {
+		return SizeX;
+	}
+
+	public float getSZY() {
+		return SizeY;
 	}
 
 	public void setXcord(float i) {
@@ -34,12 +40,16 @@ public class WallTile {
 		Ycord = i;
 	}
 
-	public void setSZ(float i) {
-		Size = i;
+	public void setSZX(float i) {
+		SizeX = i;
+	}
+
+	public void setSZY(float i) {
+		SizeY = i;
 	}
 
 	public void render(ShapeRenderer sr) {
-		sr.rect(Xcord, Ycord, Size, Size);
-		
+		sr.rect(Xcord, Ycord, SizeX, SizeY);
+
 	}
 }

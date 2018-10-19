@@ -208,15 +208,16 @@ public class Avatar {
 
 				float X2 = blocks.get(j).getTileDataX(k);
 				float Y2 = blocks.get(j).getTileDataY(k);
-				float S2 = blocks.get(j).getTileDataSZ(k);
+				float SX2 = blocks.get(j).getTileDataSZX(k);
+				float SY2 = blocks.get(j).getTileDataSZY(k);
 				// X2, Y2, S2
 
 				float lftSd = Xcord - Size;
 				float rghtSd = Xcord + Size;
 				float ovr = Ycord - Size;
 				float undr = Ycord + Size;
-				if (lftSd <= X2 + S2 && rghtSd >= X2) {
-					if (Y2 + S2 >= ovr && undr >= Y2) {
+				if (lftSd <= X2 + SX2 && rghtSd >= X2) {
+					if (Y2 + SY2 >= ovr && undr >= Y2) {
 						collide = true;
 
 					}

@@ -30,7 +30,7 @@ public class Level {
 
 	public void createLevel() {
 		for (int i = 0; i < blockMax; i++) {
-			Walls block = new Walls(tileMax, 20, Xsize, Ysize);
+			Walls block = new Walls(tileMax, 20, 50, Xsize, Ysize);
 			blocks.add(block);
 		}
 
@@ -107,13 +107,14 @@ public class Level {
 					float Y1 = foes.get(i).getYcord();
 					float X2 = blocks.get(j).getTileDataX(k);
 					float Y2 = blocks.get(j).getTileDataY(k);
-					float S2 = blocks.get(j).getTileDataSZ(k);
+					float SX2 = blocks.get(j).getTileDataSZX(k);
+					float SY2 = blocks.get(j).getTileDataSZY(k);
 					float lftSd = X1 - S1;
 					float rghtSd = X1 + S1;
 					float ovr = Y1 - S1;
 					float undr = Y1 + S1;
-					if (lftSd <= X2 + S2 && rghtSd >= X2) {
-						if (Y2 + S2 >= ovr && undr >= Y2) {
+					if (lftSd <= X2 + SX2 && rghtSd >= X2) {
+						if (Y2 + SY2 >= ovr && undr >= Y2) {
 							foes.get(i).setSpdX(foes.get(i).getSpdX() * -1);
 							foes.get(i).setSpdY(foes.get(i).getSpdY() * -1);
 						}

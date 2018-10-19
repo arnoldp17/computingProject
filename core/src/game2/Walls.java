@@ -13,39 +13,41 @@ public class Walls {
 	private ArrayList<WallTile> block = new ArrayList<WallTile>();
 	private int Xcord;
 	private int Ycord;
-	private int Size;
+	private int SizeX;
+	private int SizeY;
 
-	public Walls(int i, int s, int width, int height) {
+	public Walls(int i, int sX, int sY, int width, int height) {
 		tileNo = i;
-		Size = s;
+		SizeX = sX;
+		SizeY = sY;
 		Xcord = getRNDI(width);
 		Ycord = getRNDI(height);
 		for (int j = 0; j < tileNo; j++) {
-			addWall(Xcord, Ycord, Size);
+			addWall(Xcord, Ycord);
 		}
 
 	}
 
-	public void addWall(int x, int y, int s) {
+	public void addWall(int x, int y) {
 		int LorR = getRNDI(100);
 		int UorD = getRNDI(100);
 		int Dir = getRNDI(100);
-		WallTile segment = new WallTile(Xcord, Ycord, Size);
+		WallTile segment = new WallTile(Xcord, Ycord, SizeX, SizeY);
 		block.add(segment);
 		if (Dir % 3 == 0) {
 			if (LorR % 3 == 0) {
-				Xcord = Xcord - Size;
+				Xcord = Xcord - SizeX;
 				System.out.println("Left");
 			} else {
-				Xcord = Xcord + Size;
+				Xcord = Xcord + SizeX;
 				System.out.println("Right");
 			}
 		} else {
 			if (UorD % 3 == 0) {
-				Ycord = Ycord - Size;
+				Ycord = Ycord - SizeY;
 				System.out.println("Down");
 			} else {
-				Ycord = Ycord + Size;
+				Ycord = Ycord + SizeY;
 				System.out.println("Up");
 			}
 
@@ -69,8 +71,11 @@ public class Walls {
 	public float getTileDataY(int i) {
 		return block.get(i).getYcord();
 	}
-	public float getTileDataSZ(int i) {
-		return block.get(i).getSZ();
+	public float getTileDataSZX(int i) {
+		return block.get(i).getSZX();
+	}
+	public float getTileDataSZY(int i) {
+		return block.get(i).getSZY();
 	}
 
 	public static int getRNDI(int i) {
