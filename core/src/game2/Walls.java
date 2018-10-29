@@ -2,7 +2,8 @@ package game2;
 
 import java.util.ArrayList;
 import java.util.Random;
-
+import java.util.Scanner;
+import java.io.File;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -15,6 +16,13 @@ public class Walls {
 	private int Ycord;
 	private int SizeX;
 	private int SizeY;
+	String leveltypes = "H:\\\\Eclipse Java Workspace\\leveltype1.csv";
+/*	String[] leveltypes;
+	{
+		leveltypes = new String[1];
+
+		
+	} */
 
 	public Walls(int i, int sX, int sY, int width, int height) {
 		tileNo = i;
@@ -29,29 +37,28 @@ public class Walls {
 	}
 
 	public void addWall(int x, int y) {
-		int LorR = getRNDI(100);
-		int UorD = getRNDI(100);
-		int Dir = getRNDI(100);
-		WallTile segment = new WallTile(Xcord, Ycord, SizeX, SizeY);
-		block.add(segment);
-		if (Dir % 3 == 0) {
-			if (LorR % 3 == 0) {
-				Xcord = Xcord - SizeX;
-				System.out.println("Left");
-			} else {
-				Xcord = Xcord + SizeX;
-				System.out.println("Right");
-			}
-		} else {
-			if (UorD % 3 == 0) {
-				Ycord = Ycord - SizeY;
-				System.out.println("Down");
-			} else {
-				Ycord = Ycord + SizeY;
-				System.out.println("Up");
-			}
+		try {
 
+			File file = new File(leveltypes);
+
+			Scanner in = new Scanner(file);
+
+			while (in.hasNextLine()) {
+				for (int i = 0; i < 6; i++) {
+					String line = in.nextLine();
+					String[] parts = line.split(",");
+					
+					WallTile segment = new WallTile(Float.parseFloat(parts[1]), Float.parseFloat(parts[2]), Float.parseFloat(parts[3]), Float.parseFloat(parts[4]));
+					block.add(segment);
+				}
+				in.close();
+
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
+		
+		
 
 	}
 
@@ -68,12 +75,15 @@ public class Walls {
 	public float getTileDataX(int i) {
 		return block.get(i).getXcord();
 	}
+
 	public float getTileDataY(int i) {
 		return block.get(i).getYcord();
 	}
+
 	public float getTileDataSZX(int i) {
 		return block.get(i).getSZX();
 	}
+
 	public float getTileDataSZY(int i) {
 		return block.get(i).getSZY();
 	}
