@@ -13,7 +13,7 @@ public class WallTile {
 		Ycord = y;
 		SizeX = sX;
 		SizeY = sY;
-		System.out.println("TILES MADE");
+		// System.out.println("TILES MADE");
 	}
 
 	public float getXcord() {

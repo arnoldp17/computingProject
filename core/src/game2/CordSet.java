@@ -1,12 +1,13 @@
 package game2;
 
-public class Sizer {
+public class CordSet {
 	private int X;
 	private int Y;
-
-	public Sizer(int x, int y) {
+	private boolean visit;
+	public CordSet(int x, int y) {
 		X = x;
 		Y = y;
+		visit = false;
 	}
 
 	public int getX() {
@@ -16,10 +17,19 @@ public class Sizer {
 	public int getY() {
 		return Y;
 	}
+	public boolean getVisit() {
+		return visit;
+	}
+
 	public void setX(int i) {
 		X = i;
 	}
+
 	public void setY(int i) {
 		Y = i;
 	}
+	public void setVisit(boolean c) {
+		visit = c;
+	}
+
 }

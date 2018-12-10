@@ -8,22 +8,25 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class Avatar {
-	private float speedX;
-	private float speedY;
+	private float Speed;
 	private float Xcord;
 	private float Ycord;
 	private float Size;
 	private char KorM;
 	private int health;
 	private int armour;
+	private float AbsolSpeed;
+	// img=new Texture("H:\\\\\\\\Eclipse Java Workspace\\mage.png");
 
-	public Avatar(float X, float Y, float SX, float SY, float SZ, char KM) {
+	public Avatar(float X, float Y, float Spd, float SZ, char KM) {
+
 		Xcord = X;
 		Ycord = Y;
-		speedX = SX;
-		speedY = SY;
+
 		Size = SZ;
 		KorM = KM;
+		AbsolSpeed = Spd;
+		Speed = AbsolSpeed;
 		if (KorM == 'M') {
 			health = 4;
 			armour = 5;
@@ -33,12 +36,8 @@ public class Avatar {
 		}
 	}
 
-	public float getSpdX() {
-		return speedX;
-	}
-
-	public float getSpdY() {
-		return speedY;
+	public float getSpd() {
+		return Speed;
 	}
 
 	public float getXcord() {
@@ -53,12 +52,8 @@ public class Avatar {
 		return Size;
 	}
 
-	public void setSpdX(float i) {
-		speedX = i;
-	}
-
-	public void setSpdY(float i) {
-		speedY = i;
+	public void setSpd(float i) {
+		Speed = i;
 	}
 
 	public void setXcord(float i) {
@@ -90,110 +85,137 @@ public class Avatar {
 	}
 
 	public void MoveX() {
-		Xcord += speedX;
+		Xcord += Speed;
 	}
 
 	public void MoveY() {
-		Ycord += speedY;
+		Ycord += Speed;
 	}
 
 	public void stop() {
-		speedX = 0;
-		speedY = 0;
+		Speed = 0;
 	}
 
-	public void Motion(ArrayList<Walls> blocks, int blockMax, int tileMax) {
+	public void Motion(Walls blocks, int noOfFiles) {
 
 		if (Gdx.input.isKeyPressed(Keys.A)) {
 
-			if (CheckWall(Xcord, Ycord, Size) != true) {
-
-				if (Gdx.input.isKeyPressed(Keys.W) || Gdx.input.isKeyPressed(Keys.S)) {
-					setSpdX(-2);
-				} else {
-					setSpdX(-4);
-				}
-				if (boxCollide(blocks, blockMax, tileMax) != true) {
-					MoveX();
-				} else {
-					setXcord(getXcord() + 5);
-				}
+			if (Gdx.input.isKeyPressed(Keys.W) || Gdx.input.isKeyPressed(Keys.S)) {
+				setSpd(-(AbsolSpeed / 2));
+			} else {
+				setSpd(-AbsolSpeed);
 			}
+			if (canMoveLR(blocks, noOfFiles, Speed) == true) {
+
+				MoveX();
+
+			}
+
 		}
 
 		if (Gdx.input.isKeyPressed(Keys.D)) {
-			if (CheckWall(Xcord, Ycord, Size) != true) {
 
-				if (Gdx.input.isKeyPressed(Keys.W) || Gdx.input.isKeyPressed(Keys.S)) {
-					setSpdX(2);
-				} else {
-					setSpdX(4);
-				}
-				if (boxCollide(blocks, blockMax, tileMax) != true) {
-					MoveX();
-				} else {
-					setXcord(getXcord() - 5);
-				}
+			if (Gdx.input.isKeyPressed(Keys.W) || Gdx.input.isKeyPressed(Keys.S)) {
+				setSpd((AbsolSpeed / 2));
+			} else {
+				setSpd(AbsolSpeed);
 			}
+			if (canMoveLR(blocks, noOfFiles, Speed) == true) {
+
+				MoveX();
+
+			}
+
 		}
 
 		if (Gdx.input.isKeyPressed(Keys.S)) {
-			if (CheckWall(Xcord, Ycord, Size) != true) {
 
-				if (Gdx.input.isKeyPressed(Keys.A) || Gdx.input.isKeyPressed(Keys.D)) {
-					setSpdY(-2);
-				} else {
-					setSpdY(-4);
-				}
-				if (boxCollide(blocks, blockMax, tileMax) != true) {
-					MoveY();
-				} else {
-					setYcord(getYcord() + 5);
-				}
+			if (Gdx.input.isKeyPressed(Keys.A) || Gdx.input.isKeyPressed(Keys.D)) {
+				setSpd(-(AbsolSpeed / 2));
+			} else {
+				setSpd(-AbsolSpeed);
 			}
+			if (canMoveUD(blocks, noOfFiles, Speed) == true) {
+
+				MoveY();
+
+			}
+
 		}
 
 		if (Gdx.input.isKeyPressed(Keys.W)) {
-			if (CheckWall(Xcord, Ycord, Size) != true) {
 
-				if (Gdx.input.isKeyPressed(Keys.A) || Gdx.input.isKeyPressed(Keys.D)) {
-					setSpdY(2);
-				} else {
-					setSpdY(4);
-				}
-				if (boxCollide(blocks, blockMax, tileMax) != true) {
-					MoveY();
-				} //else {
-					//setYcord(getYcord() - 5);
-				//}
+			if (Gdx.input.isKeyPressed(Keys.A) || Gdx.input.isKeyPressed(Keys.D)) {
+				setSpd((AbsolSpeed / 2));
+			} else {
+				setSpd(AbsolSpeed);
+			}
+			if (canMoveUD(blocks, noOfFiles, Speed) == true) {
+
+				MoveY();
+
 			}
 		}
-
 	}
 
-	public boolean CheckWall(float px, float py, float s) {
+	private boolean canMoveUD(Walls blocks, int noOfFiles, float speed) {
+
+		float testY = Ycord + speed;
+		int issue = 0;
+
+		if (boxCollide(blocks, noOfFiles, Xcord, testY) == true) {
+			issue++;
+		}
+
+		if (CheckWall(Xcord, testY) == true) {
+			issue++;
+		}
+
+		if (issue == 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	private boolean canMoveLR(Walls blocks, int noOfFiles, float speed) {
+
+		float testX = Xcord + speed;
+		int issue = 0;
+
+		if (boxCollide(blocks, noOfFiles, testX, Ycord) == true) {
+			issue++;
+		}
+
+		if (CheckWall(testX, Ycord) == true) {
+			issue++;
+		}
+
+		if (issue == 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean CheckWall(float px, float py) {
 		int check = 0;
-		if ((px - s) < 1) {
-			speedX = 0;
-			Xcord = px + 4;
+
+		if ((px - Size) < 1) {
 			check++;
 		}
-		if (Gdx.app.getGraphics().getWidth() < (px + s)) {
-			speedX = 0;
-			Xcord = px - 5;
+
+		if (Gdx.app.getGraphics().getWidth() < (px + Size)) {
 			check++;
 		}
-		if ((py - s) < 1) {
-			py = py + 5;
-			Ycord = py + 4;
-			speedY = 0;
+
+		if ((py - Size) < 1) {
 			check++;
 		}
-		if (Gdx.app.getGraphics().getHeight() < (py + s)) {
-			speedY = 0;
-			Ycord = py - 4;
+
+		if (Gdx.app.getGraphics().getHeight() < (py + Size)) {
 			check++;
 		}
+
 		if (check != 0) {
 			return true;
 		} else {
@@ -201,32 +223,32 @@ public class Avatar {
 		}
 	}
 
-	public boolean boxCollide(ArrayList<Walls> blocks, int blockMax, int tileMax) {
-		boolean collide = false; // TURN INTO A FUCNTION THAT CHECKS FOR EACH DIRECTION
-		for (int j = 0; j < blockMax; j++) {
-			for (int k = 0; k < tileMax; k++) {
+	public boolean boxCollide(Walls blocks, int noOfFiles, float px, float py) {
+		for (int k = 0; k < blocks.size(); k++) {
+			// loops over every tile in every block
+			float X2 = blocks.getTileDataX(k);
+			float Y2 = blocks.getTileDataY(k);
+			float SX2 = blocks.getTileDataSZX(k);
+			float SY2 = blocks.getTileDataSZY(k);
+			// gets width and height
 
-				float X2 = blocks.get(j).getTileDataX(k);
-				float Y2 = blocks.get(j).getTileDataY(k);
-				float SX2 = blocks.get(j).getTileDataSZX(k);
-				float SY2 = blocks.get(j).getTileDataSZY(k);
-				// X2, Y2, S2
-
-				float lftSd = Xcord - Size;
-				float rghtSd = Xcord + Size;
-				float ovr = Ycord - Size;
-				float undr = Ycord + Size;
-				if (lftSd <= X2 + SX2 && rghtSd >= X2) {
-					if (Y2 + SY2 >= ovr && undr >= Y2) {
-						collide = true;
-
-					}
-
+			float lftSd = px - Size;
+			float rghtSd = px + Size;
+			// gets left and right sides
+			float ovr = py - Size;
+			float undr = py + Size;
+			// gets up and down
+			if (lftSd <= X2 + SX2 && rghtSd >= X2) {
+				if (Y2 + SY2 >= ovr && undr >= Y2) {
+					// collide = true;
+					return true;
+					// if touching object collide = true
 				}
+
 			}
 		}
 
-		return collide;
+		return false;
 
 	}
 
@@ -235,4 +257,5 @@ public class Avatar {
 		sr.circle(Xcord, Ycord, Size);
 
 	}
+
 }

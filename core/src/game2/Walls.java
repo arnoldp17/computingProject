@@ -1,6 +1,7 @@
 package game2;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 import java.io.File;
@@ -10,65 +11,58 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import game2.WallTile;
 
 public class Walls {
-	private int tileNo;
+	private int numOfFile;
 	private ArrayList<WallTile> block = new ArrayList<WallTile>();
 	private int Xcord;
 	private int Ycord;
 	private int SizeX;
 	private int SizeY;
-	String leveltypes = "H:\\\\Eclipse Java Workspace\\leveltype1.csv";
-/*	String[] leveltypes;
-	{
-		leveltypes = new String[1];
 
-		
-	} */
+	List<String> Lvls = new ArrayList<String>(); // defines the list as an array type
 
 	public Walls(int i, int sX, int sY, int width, int height) {
-		tileNo = i;
-		SizeX = sX;
-		SizeY = sY;
-		Xcord = getRNDI(width);
-		Ycord = getRNDI(height);
-		for (int j = 0; j < tileNo; j++) {
-			addWall(Xcord, Ycord);
+		numOfFile = i;
+		Lvls.add("H:\\\\Eclipse Java Workspace\\\\leveltype1.csv");
+		Lvls.add("H:\\\\Eclipse Java Workspace\\\\leveltype2.csv");
+		Lvls.add("H:\\\\Eclipse Java Workspace\\\\leveltype3.csv");
+		for (int j = 0; j < numOfFile; j++) {
+			addWall();
 		}
 
 	}
 
-	public void addWall(int x, int y) {
+	public void addWall() {
 		try {
+//			for (int j = 0; j < numOfFile; j++) {
+				File file = new File(Lvls.get(0));
 
-			File file = new File(leveltypes);
+				Scanner lvl = new Scanner(file);
 
-			Scanner in = new Scanner(file);
-
-			while (in.hasNextLine()) {
-				for (int i = 0; i < 6; i++) {
-					String line = in.nextLine();
+				while (lvl.hasNextLine()) {
+					String line = lvl.nextLine();
 					String[] parts = line.split(",");
-					
-					WallTile segment = new WallTile(Float.parseFloat(parts[1]), Float.parseFloat(parts[2]), Float.parseFloat(parts[3]), Float.parseFloat(parts[4]));
-					block.add(segment);
-				}
-				in.close();
 
-			}
+					WallTile segment = new WallTile(Float.parseFloat(parts[0]), Float.parseFloat(parts[1]),
+							Float.parseFloat(parts[2]), Float.parseFloat(parts[3]));
+					block.add(segment);
+
+				}
+				lvl.close();
+//			}
+
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		
-		
 
 	}
 
 	public void renderBlock(ShapeRenderer sr) {
-		System.out.println("in block render");
+		// System.out.println("in block render");
 		sr.setColor(Color.YELLOW);
-		for (int i = 0; i < tileNo; i++) {
-			System.out.println("in tile render loop");
+		for (int i = 0; i < block.size(); i++) {
+			// System.out.println("in tile render loop");
 			block.get(i).render(sr);
-			System.out.println("rendered tile");
+			// System.out.println("rendered tile");
 		}
 	}
 
@@ -86,6 +80,9 @@ public class Walls {
 
 	public float getTileDataSZY(int i) {
 		return block.get(i).getSZY();
+	}
+	public int size() {
+		return block.size();
 	}
 
 	public static int getRNDI(int i) {

@@ -1,35 +1,32 @@
 package game2;
 
-import java.util.Random;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Set;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import game2.Level;
-import game2.CordSet;
 
-public class GameMain extends ApplicationAdapter {
+public class PathfindTest extends ApplicationAdapter {
 
-	// SpriteBatch batch;
-	Texture img;
-	ShapeRenderer sr;
 	CordSet gameSize = new CordSet(1000, 1000);
-	Level game;
+	Walls block = new Walls(1, 20, 50, gameSize.getX(), gameSize.getY());
+	Graph graph = new Graph(gameSize.getX(), gameSize.getY(), 10, block);
+	ShapeRenderer sr;
+	float countDown = 2;
 
-	@Override
 	public void create() {
-		game = new Level(10, 5, gameSize.getX(), gameSize.getY());
-		// System.out.println("Created level");
 		sr = new ShapeRenderer();
+
 	}
 
-	@Override
 	public void render() {
 		// System.out.println(1/Gdx.graphics.getDeltaTime()); //FPS TRACKER
 		Gdx.gl.glBlendColor(0.45f, 0.45f, 0.45f, 0.5f);
@@ -44,27 +41,32 @@ public class GameMain extends ApplicationAdapter {
 			try {
 				Thread.sleep(i * 1000);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 		sr.begin(ShapeType.Filled);
 		sr.setColor(Color.GRAY);
 		sr.rect(0, 0, gameSize.getX(), gameSize.getY());
-		// System.out.println("type set");
-		game.renderLvl(sr);
-		// System.out.println("rendered level");
+		block.renderBlock(sr);
+		Node start = new Node(400, 300, 50, false);
+		Node end = new Node(600, 200, 50, false);
+
+		graph.renderGraph(sr);
+		sr.setColor(Color.RED);
+		sr.rect(start.getX(), start.getX(), start.getCost(), start.getCost());
+		sr.setColor(Color.BLUE);
+		sr.rect(end.getX(), end.getX(), end.getCost(), end.getCost());
+
+		if (countDown >= 1) {
+			countDown = countDown - (Gdx.graphics.getDeltaTime());
+			System.out.println(countDown);
+		} else {
+			System.out.println(graph.pathfind(start, end, sr, block));
+			countDown = 2;
+			System.out.println("Path found");
+		}
+
 		sr.end();
-	}
-
-	public static float getRNDF(float i) {
-		float rnd = new Random().nextFloat();
-		return rnd;
-	}
-
-	public static int getRNDI(int i) {
-		int rnd = new Random().nextInt(i);
-		return rnd;
 	}
 
 }

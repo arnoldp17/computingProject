@@ -1,24 +1,26 @@
 package game2;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 public class Entity {
-	private float speedX;
-	private float speedY;
 	private float Xcord;
 	private float Ycord;
 	private float Size;
+	private float Speed;
+	private float absolSpeed;
 
-	public Entity(float X, float Y, float SX, float SY, float SZ) {
+	public Entity(float X, float Y, float Spd, float SZ) {
 		Xcord = X;
 		Ycord = Y;
-		speedX = SX;
-		speedY = SY;
+		absolSpeed = Spd;
 		Size = SZ;
-
+		Speed = absolSpeed;
 	}
 
 	public void renderEntity(ShapeRenderer sr) {
@@ -26,12 +28,8 @@ public class Entity {
 		sr.circle(Xcord, Ycord, Size);
 	}
 
-	public float getSpdX() {
-		return speedX;
-	}
-
-	public float getSpdY() {
-		return speedY;
+	public float getSpd() {
+		return absolSpeed;
 	}
 
 	public float getXcord() {
@@ -46,12 +44,8 @@ public class Entity {
 		return Size;
 	}
 
-	public void setSpdX(float i) {
-		speedX = i;
-	}
-
-	public void setSpdY(float i) {
-		speedY = i;
+	public void setSpd(float i) {
+		Speed = i;
 	}
 
 	public void setXcord(float i) {
@@ -67,37 +61,150 @@ public class Entity {
 	}
 
 	public void MoveX() {
-		Xcord += speedX;
-	}
-
-	public void stop() {
-		speedX = 0;
-		speedY = 0;
+		Xcord += Speed;
 	}
 
 	public void MoveY() {
-		Ycord += speedY;
+		Ycord += Speed;
 	}
 
-	public void CheckWall(float px, float py, float s) {
-		if ((px - s) < 1) {
-			speedX = speedX * -1;
+	public void stop() {
+		Speed = 0;
+	}
+
+	public void travel(Walls blocks, int noOfFiles, char dir) {
+
+		if (dir == 'A') {
+
+			if (canMoveLR(blocks, noOfFiles, Speed) == true) {
+
+				MoveX();
+
+			}
+
 		}
-		if (Gdx.app.getGraphics().getWidth() < (px + s)) {
-			speedX = speedX * -1;
+
+		if (dir == 'D') {
+			if (canMoveLR(blocks, noOfFiles, Speed) == true) {
+
+				MoveX();
+
+			}
+
 		}
-		if ((py - s) < 1) {
-			speedY = speedY * -1;
+
+		if (dir == 'S') {
+
+			if (canMoveUD(blocks, noOfFiles, Speed) == true) {
+
+				MoveY();
+
+			}
 		}
-		if (Gdx.app.getGraphics().getHeight() < (py + s)) {
-			speedY = speedY * -1;
+
+		if (dir == 'W')
+
+		{
+		}
+		if (canMoveUD(blocks, noOfFiles, Speed) == true) {
+
+			MoveY();
+
 		}
 	}
 
-	public void travel() {
-		MoveY();
-		MoveX();
-		CheckWall(Xcord, Ycord, Size);
+	private boolean canMoveUD(Walls blocks, int noOfFiles, float speed) {
+
+		float testY = Ycord + speed;
+		int issue = 0;
+
+		if (boxCollide(blocks, noOfFiles, Xcord, testY) == true) {
+			issue++;
+		}
+
+		if (CheckWall(Xcord, testY) == true) {
+			issue++;
+		}
+
+		if (issue == 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	private boolean canMoveLR(Walls blocks, int noOfFiles, float speed) {
+
+		float testX = Xcord + speed;
+		int issue = 0;
+
+		if (boxCollide(blocks, noOfFiles, testX, Ycord) == true) {
+			issue++;
+		}
+
+		if (CheckWall(testX, Ycord) == true) {
+			issue++;
+		}
+
+		if (issue == 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean CheckWall(float px, float py) {
+		int check = 0;
+
+		if ((px - Size) < 1) {
+			check++;
+		}
+
+		if (Gdx.app.getGraphics().getWidth() < (px + Size)) {
+			check++;
+		}
+
+		if ((py - Size) < 1) {
+			check++;
+		}
+
+		if (Gdx.app.getGraphics().getHeight() < (py + Size)) {
+			check++;
+		}
+
+		if (check != 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean boxCollide(Walls blocks, int noOfFiles, float px, float py) {
+		for (int k = 0; k < blocks.size(); k++) {
+			// loops over every tile in every block
+			float X2 = blocks.getTileDataX(k);
+			float Y2 = blocks.getTileDataY(k);
+			float SX2 = blocks.getTileDataSZX(k);
+			float SY2 = blocks.getTileDataSZY(k);
+			// gets width and height
+
+			float lftSd = px - Size;
+			float rghtSd = px + Size;
+			// gets left and right sides
+			float ovr = py - Size;
+			float undr = py + Size;
+			// gets up and down
+			if (lftSd <= X2 + SX2 && rghtSd >= X2) {
+				if (Y2 + SY2 >= ovr && undr >= Y2) {
+					// collide = true;
+					return true;
+					// if touching object collide = true
+				}
+
+			}
+		}
+
+		return false;
+
 	}
 }
-
