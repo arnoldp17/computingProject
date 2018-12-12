@@ -61,7 +61,7 @@ public class PathfindTest extends ApplicationAdapter {
 			countDown = countDown - (Gdx.graphics.getDeltaTime());
 			System.out.println(countDown);
 		} else {
-			System.out.println(graph.pathfind(start, end, sr, block));
+			System.out.println(graph.pathfind(start, end, sr, block)); //PATH FINDING IS HERE
 			countDown = 2;
 			System.out.println("Path found");
 		}

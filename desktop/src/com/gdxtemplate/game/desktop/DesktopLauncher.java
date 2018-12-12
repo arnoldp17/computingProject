@@ -14,8 +14,8 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 
 		// config.fullscreen = true;
-		//new LwjglApplication(new GameMain(), config);
-		new LwjglApplication(new PathfindTest(), config);
+		new LwjglApplication(new GameMain(), config);
+		//new LwjglApplication(new PathfindTest(), config);
 
 		config.height = 1000;
 		// Gdx.app.getGraphics().getHeight();

@@ -32,9 +32,9 @@ public class Graph {
 
 		Node up = new Node(i.getX(), i.getY() + chunkSize, makeCost(i, blocks), i.getVisit());
 		neighbours.add(up);
-		Node rght = new Node(i.getX() + chunkSize, i.getY() , makeCost(i, blocks), i.getVisit());
+		Node rght = new Node(i.getX() + chunkSize, i.getY(), makeCost(i, blocks), i.getVisit());
 		neighbours.add(rght);
-		Node lft = new Node(i.getX() - chunkSize, i.getY() , makeCost(i, blocks), i.getVisit());
+		Node lft = new Node(i.getX() - chunkSize, i.getY(), makeCost(i, blocks), i.getVisit());
 		neighbours.add(lft);
 		Node dwn = new Node(i.getX(), i.getY() - chunkSize, makeCost(i, blocks), i.getVisit());
 		neighbours.add(dwn);
@@ -175,9 +175,9 @@ public class Graph {
 
 		while (frontier.isEmpty() == false) {
 
-			if (checked > nodes.size()) {
-				System.exit(0);
-			}
+			//if (checked > 8 /* nodes.size() */) {
+			//	System.exit(0);
+			//}
 
 			System.out.println("Pathfinding");
 			Node current = frontier.poll();
@@ -190,19 +190,25 @@ public class Graph {
 			System.out.println("Checking (" + current.getX() + ", " + current.getY() + ")");
 
 			while (neighbours.isEmpty() == false) {
+
 				System.out.println("In neighbour loop");
 				Node checkMe = neighbours.poll();
-				System.out.println("for next in Neightbours");
-				for (int i = 0; i < 4; i++) {
-					checked++;
-					if (massCheck(checkMe, cameFrom) == false) {
+				System.out.println("Checking neighbour " + neighbours.size());
 
-						setCost(2, neighbours.peek().getX(), neighbours.peek().getY());
-						renderNode(sr, neighbours.peek().getX(), neighbours.peek().getY());
-						frontier.add(checkMe);
+				checked++;
+				System.out.println("Checked " + checked);
+				if (checked > 40 /* nodes.size() */) {
+					//System.exit(0);
+				}
+				if (massCheck(checkMe, cameFrom) == false) {
+
+					setCost(2, checkMe.getX(), checkMe.getY());
+					renderNode(sr, checkMe.getX(), checkMe.getY());
+					frontier.add(checkMe);
+					if (massCheck(current, cameFrom) == false) {
+						System.out.println("Adding (" + current.getX() + ", " + current.getY() + ")");
 						cameFrom.add(current);
 					}
-
 				}
 
 			}
@@ -214,23 +220,37 @@ public class Graph {
 
 	public boolean cordMatch(Node check, Node goal) {
 		if (check.getX() == goal.getX() && check.getY() == goal.getY()) {
-			System.out.println("MATCH FOUND");
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			System.out.println("MATCH FOUND AT (" + check.getX() + ", " + check.getY() + ")");
 			return true;
 
 		}
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 
+		System.out.println("NO MATCH");
 		return false;
 
 	}
 
 	public boolean massCheck(Node check, ArrayList<Node> CameFrom) {
+		int matches = 0;
 		for (int i = 0; i < CameFrom.size(); i++) {
 			boolean match = cordMatch(check, CameFrom.get(i));
 			if (match = true) {
-				return true;
+				matches++;
 			}
 		}
-
+		if (matches < 0) {
+			return true;
+		}
 		return false;
 	}
 }

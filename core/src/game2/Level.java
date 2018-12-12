@@ -14,7 +14,7 @@ import game2.Entity;
 import game2.Walls;
 
 public class Level {
-	private Avatar player = new Avatar(450, 450, 2, 7, 'M'); // defines the player and its attributes
+	private Avatar player = new Avatar(450, 450, 5, 7, 'M'); // defines the player and its attributes
 	private ArrayList<Entity> foes = new ArrayList<Entity>(); // creates a list for enemies
 	private int difficulty = 1; // Sets the difficulty multiplier
 	private int maxFileNo = 3; // sets the max number of tiles per block
@@ -59,14 +59,14 @@ public class Level {
 		// System.out.println(Gdx.graphics.getDeltaTime());
 		if (countDown >= 1) {
 			countDown = countDown - (Gdx.graphics.getDeltaTime());
-			// System.out.println(countDown);
+			 //System.out.println(countDown);
 		} else {
 			for (int i = 0; i < foes.size(); i++) {
 				Node start = new Node(Math.round(foes.get(i).getXcord()), Math.round(foes.get(i).getYcord()), 0, false);
 				Node end = new Node(Math.round(player.getXcord()), Math.round(player.getYcord()), 0, false);
 				System.out.println("PATH FIND!");
 				// ArrayList<Node> Route = pathfindAstr(start, end);
-				ArrayList<Node> route = pathfind(start, end, block);
+				//ArrayList<Node> route = pathfind(start, end, block);
 				/*ArrayList<Node> path = getPath(route, start, end);
 				System.out.println("PATH FOUND");
 				System.out.println("Path is as follows:");
